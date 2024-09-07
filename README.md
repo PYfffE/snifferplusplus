@@ -1,4 +1,7 @@
 ## Some nodepad++ tempory files sniffer
+
+![sniffer++](https://github.com/user-attachments/assets/368c8a2a-4735-4f09-bbdd-e634cb66e3e9)
+
 Features:
 * No process memory checking;
 * No registry checking;
@@ -9,3 +12,4 @@ Features:
 ```cmd
 .\sniffer++.exe [user,god]
 ```
+
