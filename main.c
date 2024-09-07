@@ -3,11 +3,11 @@
 #include <stdio.h>
 #include <strsafe.h>
 #include <Shlobj.h>
-//#include <linkedList.h>
 #include "linkedList.h"
 
+// 
 void getBackupFiles(WCHAR* wcPlusplusBackupDir) {
-    // Создаем новый список
+    // list init
     List* filePathList = makelist();
 
     WIN32_FIND_DATA ffd;
@@ -30,8 +30,7 @@ void getBackupFiles(WCHAR* wcPlusplusBackupDir) {
     // Find the first file in the directory.
     hFind = FindFirstFile(pathWithAsterisk, &ffd);
 
-    // List all the files in the directory with some info about them. Without directories
-
+    // List all files in the directory with some info about them.
     DWORD dwMaxBufferLength = 0;
     do
     {
@@ -47,22 +46,19 @@ void getBackupFiles(WCHAR* wcPlusplusBackupDir) {
 
     } while (FindNextFile(hFind, &ffd) != 0);
 
-    // print file paths
-    //display(filePathList);
-
-    // print file data
+    // pass through linked list
     Node* current = filePathList->head;
     if (filePathList->head != NULL) {
         HANDLE hFile;
         LPVOID maxFileBuffer = VirtualAlloc(lpFileData, dwMaxBufferLength, MEM_COMMIT, PAGE_READWRITE);
         for (; current != NULL; current = current->next) {
-            hFile = CreateFile(current->wcFilePath,               // file to open
-                GENERIC_READ,          // open for reading
-                0,       // share for reading
-                NULL,                  // default security
-                OPEN_EXISTING,         // existing file only
-                FILE_ATTRIBUTE_NORMAL, // normal file
-                NULL);                 // no attr. template
+            hFile = CreateFile(current->wcFilePath,
+                GENERIC_READ,
+                0,
+                NULL,
+                OPEN_EXISTING,
+                FILE_ATTRIBUTE_NORMAL,
+                NULL);
 
             int success = ReadFile(hFile, maxFileBuffer, current->dwfileSize, NULL, NULL);
             CloseHandle(hFile);
@@ -72,7 +68,7 @@ void getBackupFiles(WCHAR* wcPlusplusBackupDir) {
     }
 
 
-    // Очищаем память и уничтожаем список
+    // memory free
     FindClose(hFind);
     destroy(filePathList);
     return dwError;
@@ -89,14 +85,12 @@ List* getAllUsersFoldersAppData() {
     // Find the first file in the directory.
     hFind = FindFirstFile(wcUsersDir, &ffd);
 
-
-    // List all the files in the directory with some info about them. Without directories
-
+    // List all the files in the directory with some info about them.
     DWORD dwMaxBufferLength = 0;
     do
     {
         if (ffd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
-            //TCHAR userDirName[MAX_PATH] = ffd.cFileName;
+            // exclude "." and ".." directories
             if (strcmp(L".", ffd.cFileName) || strcmp(L"..", ffd.cFileName)) {
                 wprintf(L"%s\n", ffd.cFileName);
                 add(ffd.cFileName, sizeof(ffd.cFileName), usersList);
@@ -142,7 +136,7 @@ int main(int argc, TCHAR* argv[])
             getBackupFiles(plusplusBackupPath);
         }
         else if (! argv[1], L"god") {
-            // Узнать всех пользователей
+            // get all users
             List* usersList = getAllUsersFoldersAppData();
 
             Node* current = usersList->head;

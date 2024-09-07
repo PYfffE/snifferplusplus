@@ -1,3 +1,5 @@
+// Linked list for usernames and filenames store
+
 #include "linkedList.h"
 #include <stdio.h>
 #include <windows.h>
@@ -46,16 +48,6 @@ void add(WCHAR* data, DWORD size, List* list) {
             current = current->next;
         }
         current->next = createnode(data, size);
-    }
-}
-
-void display(List* list) {
-    Node* current = list->head;
-    if (list->head == NULL)
-        return;
-
-    for (; current != NULL; current = current->next) {
-        wprintf(L"%s\n", current->wcFilePath);
     }
 }
 
