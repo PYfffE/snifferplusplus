@@ -59,11 +59,12 @@ void getBackupFiles(WCHAR* wcPlusplusBackupDir) {
                 OPEN_EXISTING,
                 FILE_ATTRIBUTE_NORMAL,
                 NULL);
-
+            
             int success = ReadFile(hFile, maxFileBuffer, current->dwfileSize, NULL, NULL);
             CloseHandle(hFile);
             wprintf(L"File %s:\n", current->wcFilePath);
-            printf("%s\n\n", maxFileBuffer);
+            printf("%s\n\n\n", maxFileBuffer);
+            ZeroMemory(maxFileBuffer, current->dwfileSize);
         }
     }
 
