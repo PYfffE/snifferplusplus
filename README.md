@@ -6,7 +6,7 @@ Features:
 * No process memory checking;
 * No registry checking;
 * only checking c:\users\<user>\appdata\roaming\Notepad++\Backup\ directory;
-* If you have admin rights, you cat run check for all users.
+* If you have admin rights, you can run check for all users.
 
 ## Usage
 ```cmd
